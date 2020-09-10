@@ -1,8 +1,10 @@
 # Funding-Information-of-Indian-startups
 Data Visualization:  
 
-This dataset has funding information of the Indian startups from January 2015 to August 2017.
-Feature Details :
+#This dataset has funding information of the Indian startups from January 2015 to August 2017.
+#Feature Details :
+
+
 SNo - Serial number.
 Date - Date of funding in format DD/MM/YYYY.
 StartupName - Name of the startup which got funded.

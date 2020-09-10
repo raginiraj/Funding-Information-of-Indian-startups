@@ -36,3 +36,13 @@ for i in range(l1):
 
 plt.plot(yearlist,noofFunding)
 plt.show()
+
+
+Results:
+
+Year       No of Funding
+2015        936
+2016        993
+2017        443
+
+

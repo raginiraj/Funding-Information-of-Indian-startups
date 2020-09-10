@@ -1,0 +1,73 @@
+## To Find out if cities play any role in receiving funding.
+
+import operator
+import math
+import csv
+import numpy as np
+from collections import OrderedDict
+import pandas as pd
+import matplotlib.pyplot as plt
+startup=pd.read_csv(open('startup_funding.csv'),skipinitialspace=True,encoding='ISO-8859-1')
+startup['AmountInUSD']=startup['AmountInUSD'].apply(lambda x: float(str(x).replace(',','')))
+startup['AmountInUSD'] = pd.to_numeric(startup['AmountInUSD'])
+#print(startup['CityLocation'].isnull().sum())
+#df=startup[startup['CityLocation'].isnull()]
+#print(df)
+startup['CityLocation'].fillna('',inplace=True)
+location={}
+#print(startup.dtypes)
+foreign=['California','Houston','Us','Usa','Boston','London','Palo alto','Seattle','New York','Dallas','Singapore','Sfo','Bangkok','San mateo','California','Dubai','Ny','Uk']
+#print(startup['CityLocation'].isnull().sum())
+for index,row in startup.iterrows():
+    val=row['AmountInUSD']
+    if(math.isnan(val)):
+        continue
+    else:
+        city=row['CityLocation']
+        if(city==''):
+            pass
+        else:
+            #print(city)
+            if('/' in city):
+                citylist=city.split('/')
+                i=citylist[0]
+                i=i.strip()
+                i=i.title()
+                if(i in foreign or i==''):
+                    pass
+                else:
+                    if(i=='Delhi'):
+                        i='New Delhi'
+                    location[i]=location.get(i,0)+row['AmountInUSD']
+            else:
+                if(city in foreign or city==''):
+                    pass
+                else:
+                    if(city=='Delhi'):
+                        city='New Delhi'
+                    location[city]=location.get(city,0)+row['AmountInUSD']
+location=dict(sorted(location.items(), key=operator.itemgetter(1),reverse=True))
+total=0
+cityl=[]
+value=[]
+j=0
+for i in location.keys():
+    if(j<10):
+        total+=location[i]
+        cityl.append(i)
+        value.append(location[i])
+        j=j+1
+percent=[]
+cityl=np.array(cityl,dtype=str)
+value=np.array(value,dtype=np.int64)
+l=len(cityl)
+for i in range(l):
+    v=value[i]
+    percent.append(float(v/total))
+for i in range(10):
+    v=float(percent[i])
+    v=v*100
+    v='%.2f'%float(v)
+    print(cityl[i],v)
+plt.pie(value,labels=cityl,autopct='%.2f')
+plt.show()

@@ -1,0 +1,38 @@
+#Check the trend of investments over the years. To check the trend, find -
+#Total number of fundings done in each year.
+
+import csv
+import numpy as np
+from collections import OrderedDict
+import matplotlib.pyplot as plt
+startup=csv.DictReader(open('startup_funding.csv'),skipinitialspace=True)
+res={}
+for row in startup:
+    date=row['Date']
+    datestr=''
+    datelist=[]
+    l=len(date)
+    for i in range(l):
+        if(date[i]=='/' and date[i-1]=='/'):
+            continue
+        elif(date[i]=='/' or date[i]=='.'):
+            datelist.append(datestr)
+            datestr=''
+        else:
+            datestr=datestr+date[i]
+    datelist.append(datestr)
+    y=datelist[2]
+    year=int(y)
+    res[year]=res.get(year,0)+1
+dict1=OrderedDict(sorted(res.items()))
+yearlist=[]
+noofFunding=[]
+for k in dict1.keys():
+    yearlist.append(k)
+    noofFunding.append(dict1[k])
+l1=len(yearlist)
+for i in range(l1):
+    print(yearlist[i],noofFunding[i])
+
+plt.plot(yearlist,noofFunding)
+plt.show()

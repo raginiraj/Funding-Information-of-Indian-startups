@@ -1,0 +1,67 @@
+#Find out which cities are generally chosen for starting a startup.
+#Find top 10 Indian cities which have most number of startups ?
+
+
+import operator
+import csv
+import numpy as np
+from collections import OrderedDict
+import matplotlib.pyplot as plt
+startup=csv.DictReader(open('startup_funding.csv'),skipinitialspace=True)
+location={}
+foreign=['California','Houston','Us','Usa','Boston','London','Palo alto','Seattle','New York','Dallas','Singapore','Sfo','Bangkok','San mateo','California','Dubai','Ny','Uk']
+for row in startup:
+    sloc=row['CityLocation']
+    if('/' in sloc):
+        slocl=sloc.split("/")
+        #print("the list is ")
+        #print(*slocl)
+        for i in slocl:
+            i=i.strip()
+            i=i.title()
+            if( i in foreign or i==''):
+                pass
+                #print(i," in foreign ")
+            else:
+                if(i=='Delhi'):
+                    i='New Delhi'
+                #print(i," in india")
+                location[i]=location.get(i,0)+1
+    else:
+        sloc=sloc.strip()
+        sloc=sloc.title()
+        if(sloc=='Delhi'):
+            sloc='New Delhi'
+        if(sloc in foreign or sloc==''):
+           # print(i," in foreign ")
+            pass
+        else:
+            #print(i," in india")
+            location[sloc]=location.get(sloc,0)+1
+location1=dict(sorted(location.items(), key=operator.itemgetter(1),reverse=True))
+j=0
+l=[]
+v=[]
+for i in location1.keys():
+    if(j<10):
+        print(i,location1[i])
+        l.append(i)
+        v.append(location1[i])
+        j=j+1
+
+plt.pie(v,labels=l)
+plt.show()
+
+
+Results:
+Bangalore 635
+Mumbai 449
+New Delhi 389
+Gurgaon 241
+Pune 91
+Noida 79
+Hyderabad 77
+Chennai 67
+Ahmedabad 35
+Jaipur 25
+
